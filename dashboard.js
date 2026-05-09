@@ -1,4 +1,4 @@
-// 1. DATA PUSAT 
+// 1. CONTOH DATA PUSAT 
 let dataPinjaman = [
     { id: 'P-101', idAnggota: 'A-001', nama: 'Budi Santoso', telp: '0812-3456-7890', alamat: 'Jl. Merdeka No. 10', total: 10000000, bayar: 6000000, status: 'Berjalan', tglBayar: '15 Mar 2026', denda: 0, statusAnggota: 'Aktif' },
     { id: 'P-102', idAnggota: 'A-002', nama: 'Siti Aminah', telp: '0856-7890-1234', alamat: 'Gg. Kelinci No. 5', total: 5000000, bayar: 5000000, status: 'Lunas', tglBayar: '01 Feb 2026', denda: 0, statusAnggota: 'Aktif' },
@@ -17,7 +17,7 @@ let currentPagePinjaman = 1;
 let currentPageAnggota = 1;
 let deleteTargetId = null; // Menyimpan ID yang akan dihapus
 
-// 2. SISTEM TEMA & IKON
+// 2. TEMA & IKON
 const htmlElement = document.documentElement;
 const btnTheme = document.getElementById('toggleTheme');
 const btnStyle = document.getElementById('toggleStyle');
@@ -267,7 +267,7 @@ function renderTableAnggota() {
     });
 }
 
-// --- FUNGSI MUNCULKAN MODAL HAPUS ---
+// FUNGSI MUNCULKAN MODAL HAPUS
 function hapusAnggota(id) {
     const member = dataPinjaman.find(p => p.id === id);
     if (member && member.statusAnggota === 'Tidak Aktif') {
@@ -277,13 +277,13 @@ function hapusAnggota(id) {
     }
 }
 
-// --- FUNGSI TUTUP MODAL HAPUS ---
+// FUNGSI TUTUP MODAL HAPUS
 function closeDeleteModal() {
     document.getElementById('deleteModal').style.display = 'none';
     deleteTargetId = null;
 }
 
-// --- FUNGSI EKSEKUSI HAPUS (SAAT KLIK 'YA, HAPUS') ---
+// FUNGSI HAPUS (YA = HAPUS)
 function confirmDelete() {
     if (deleteTargetId) {
         const index = dataPinjaman.findIndex(p => p.id === deleteTargetId);
@@ -294,12 +294,12 @@ function confirmDelete() {
             updateDashboardStats();
             setupNotifications();
             
-            // Munculkan Toast Sukses
+            // Toast Sukses
             const toast = document.getElementById('toastPopup');
             if(toast) {
                 document.querySelector('.toast-icon').innerText = '✅';
                 document.getElementById('toastMessage').innerText = "Data Anggota berhasil dihapus!";
-                toast.style.borderLeftColor = '#10b981'; // Warna hijau sukses
+                toast.style.borderLeftColor = '#10b981'; // hijau sukses
                 toast.classList.add('show');
                 setTimeout(() => toast.classList.remove('show'), 4000);
             }
@@ -335,7 +335,6 @@ function showDetail(id) {
 function closeModal() { document.getElementById('detailModal').style.display = 'none'; }
 
 
-// 5. INISIALISASI
 document.addEventListener('DOMContentLoaded', () => {
     updateDashboardStats(); 
     setupNotifications();   
@@ -364,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// 6. FUNGSI FORM TAMBAH (UPDATE DATA NYATA)
+// 5. FORM TAMBAH UPDATE DATA
 
 function openAddMemberModal() { document.getElementById('addMemberModal').style.display = 'flex'; }
 function closeAddMemberModal() { document.getElementById('addMemberModal').style.display = 'none'; }
@@ -409,7 +408,7 @@ function submitAddLoan(e) {
     const idAnggotaBaru = 'A-' + (Math.floor(Math.random() * 900 + 100));
     const idPinjamanBaru = 'P-' + (Math.floor(Math.random() * 900 + 100));
 
-    // 3. Masukkan data pinjaman ke array dataPinjaman (unshift untuk menaruh di posisi paling atas)
+    // 3. Masukkan data pinjaman ke array dataPinjaman
     dataPinjaman.unshift({
         id: idPinjamanBaru, 
         idAnggota: idAnggotaBaru, 
@@ -426,14 +425,11 @@ function submitAddLoan(e) {
 
     closeAddLoanModal();
     
-    // Menampilkan notifikasi sukses menggunakan fungsi toast yang sudah ada
     showCustomToast('✅', `Pinjaman Rp ${nominal.toLocaleString('id-ID')} untuk ${namaPeminjam} berhasil dicatat!`, '#10b981');
     
-    // Reset form agar bersih kembali
     document.getElementById('addLoanForm').reset();
     
-    // 4. Update tabel dan statistik dashboard secara real-time
-    currentPagePinjaman = 1; // Kembali ke halaman 1 agar data terbaru terlihat
+    currentPagePinjaman = 1;
     if (typeof renderTablePinjaman === "function") renderTablePinjaman();
     if (typeof updateDashboardStats === "function") updateDashboardStats();
 }
@@ -451,8 +447,7 @@ function showCustomToast(icon, message, color) {
 
 
 
-// 7. SISTEM LAPORAN KEUANGAN (CRUD & PAGINATION)
-// Data Awal untuk Laporan
+// 6. LAPORAN KEUANGAN (CRUD & PAGINATION)
 let dataTransaksi = [
     { id: 1, tgl: '2026-04-28', ket: 'Pembayaran Iuran Bulanan (Budi Santoso)', jenis: 'Masuk', jumlah: 150000 },
     { id: 2, tgl: '2026-04-27', ket: 'Pencairan Pinjaman Darurat (Siti Aminah)', jenis: 'Keluar', jumlah: 5000000 },
@@ -463,9 +458,8 @@ let dataTransaksi = [
 ];
 
 let currentPageLaporan = 1;
-const itemsPerReportPage = 5; // MAKSIMAL 5 BARIS PER HALAMAN
+const itemsPerReportPage = 5;
 
-// Menghitung Saldo dan Menampilkan di Kartu Atas
 function updateReportStats() {
     let masuk = 0;
     let keluar = 0;
@@ -475,7 +469,7 @@ function updateReportStats() {
         else keluar += t.jumlah;
     });
 
-    const saldoAkhir = masuk - keluar; // Kas dihitung murni dari transaksi
+    const saldoAkhir = masuk - keluar;
 
     const elPemasukan = document.getElementById('totalPemasukan');
     if(elPemasukan) {
@@ -485,17 +479,14 @@ function updateReportStats() {
     }
 }
 
-// Menampilkan Tabel dengan Pagination 5 Baris
 function renderTableLaporan() {
     const tableBody = document.getElementById('tableLaporanBody');
     if (!tableBody) return;
 
     tableBody.innerHTML = '';
     
-    // Sortir dari tanggal paling baru ke terlama
     const sortedData = [...dataTransaksi].sort((a, b) => new Date(b.tgl) - new Date(a.tgl));
     
-    // Potong data sesuai halaman saat ini (maks 5)
     const start = (currentPageLaporan - 1) * itemsPerReportPage;
     const paginatedData = sortedData.slice(start, start + itemsPerReportPage);
 
@@ -595,19 +586,15 @@ function deleteReport(id) {
     document.getElementById('deleteReportModal').style.display = 'flex';
 }
 
-// Menutup Modal Konfirmasi Hapus
 function closeDeleteReportModal() {
     document.getElementById('deleteReportModal').style.display = 'none';
-    targetDeleteReportId = null; // Reset ID
+    targetDeleteReportId = null;
 }
 
-// Eksekusi Hapus saat tombol "Ya, Hapus" diklik
 function confirmDeleteReport() {
     if (targetDeleteReportId !== null) {
-        // Hapus data dari array
         dataTransaksi = dataTransaksi.filter(t => t.id !== targetDeleteReportId);
         
-        // Tutup modal
         closeDeleteReportModal();
         
         // Munculkan notifikasi dan render ulang tabel
@@ -616,7 +603,6 @@ function confirmDeleteReport() {
     }
 }
 
-// Pemicu saat halaman Laporan dimuat pertama kali
 document.addEventListener('DOMContentLoaded', () => {
     if(document.getElementById('tableLaporanBody')) {
         renderTableLaporan();
