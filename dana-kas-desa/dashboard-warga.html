@@ -1,27 +1,38 @@
 <!DOCTYPE html>
-<html lang="id" class="transition-colors duration-300" data-theme="light" data-style="glass">
+<html lang="id" class="transition-colors duration-300" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dashboard Warga - KopDes</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // Konfigurasi Tailwind dibersihkan dari warna blob/cairan
         tailwind.config = {
             darkMode: 'class',
-            theme: { extend: { colors: { primary: '#10b981', primaryDark: '#059669', danger: '#ef4444', warning: '#f59e0b' } } }
+            theme: { 
+                extend: { 
+                    colors: { primary: '#10b981', primaryDark: '#059669', danger: '#ef4444', warning: '#f59e0b' } 
+                } 
+            }
         }
     </script>
+    
     <style type="text/tailwindcss">
         @layer components {
-            .panel-theme { @apply bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm transition-all duration-500 rounded-2xl; }
-            html[data-style="glass"] .panel-theme { @apply bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl border-white/60 dark:border-white/10 shadow-lg; }
+            /* Efek Glassmorphism Dibuat Permanen Untuk Panel/Card */
+            .panel-theme { @apply bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-lg transition-all duration-500 rounded-2xl; }
+            
             .btn-primary { @apply inline-block px-6 py-3 bg-primary hover:bg-primaryDark text-white font-bold rounded-xl transition-all duration-300 hover:-translate-y-1 text-center cursor-pointer; }
             .card-hover { @apply transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl hover:border-primary/50 relative overflow-hidden; }
             .skeleton { @apply animate-pulse bg-slate-300 dark:bg-slate-700 h-8 w-3/4 rounded mx-auto mb-2; }
-            .icon-btn { @apply w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 text-slate-800 dark:text-slate-100 flex justify-center items-center cursor-pointer transition-all duration-300 hover:scale-105; }
-            .glass-input { @apply w-full px-4 py-3 rounded-lg mt-1 outline-none text-sm transition-all duration-300; }
-            [data-theme="light"] .glass-input { background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.15); color: #333; }
-            [data-theme="dark"] .glass-input { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; }
+            
+            .icon-btn { @apply w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md text-slate-800 dark:text-slate-100 flex justify-center items-center cursor-pointer transition-all duration-300 hover:scale-105; }
+            
+            .glass-input { @apply w-full px-4 py-3 rounded-lg mt-1 outline-none text-sm transition-all duration-300 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white; }
+            .glass-input:focus { border-color: #10b981 !important; box-shadow: 0 0 0 3px rgba(16,185,129,0.2); }
+            [data-theme="dark"] .glass-input option { background: #1e293b; color: #fff; }
+            
             .dot-flashing { position: relative; width: 15px; height: 15px; border-radius: 5px; background-color: #10b981; animation: dot-flashing 1s infinite linear alternate; animation-delay: 0.5s; }
             .dot-flashing::before, .dot-flashing::after { content: ''; display: inline-block; position: absolute; top: 0; width: 15px; height: 15px; border-radius: 5px; background-color: #10b981; }
             .dot-flashing::before { left: -25px; animation: dot-flashing 1s infinite alternate; animation-delay: 0s; }
@@ -38,13 +49,15 @@
     </div>
 
     <div id="dashboardContent" class="opacity-0 transition-opacity duration-700">
+        
         <nav class="panel-theme rounded-none border-t-0 border-x-0 sticky top-0 z-50 px-4 py-4 mb-8">
             <div class="max-w-6xl mx-auto flex justify-between items-center">
                 <a href="#" class="text-2xl font-extrabold tracking-tight">Kop<span class="text-primary">Des</span></a>
                 <div class="flex items-center gap-4 md:gap-6">
                     <a href="dana-desa.html" class="hidden md:block font-medium opacity-80 hover:text-primary transition-colors mr-2">Beranda</a>
-                    <button id="toggleTheme" class="icon-btn">🌙</button>
-                    <button id="toggleStyle" class="icon-btn">✨</button>
+                    
+                    <button id="toggleTheme" class="icon-btn" title="Ganti Tema">🌙</button>
+                    
                     <button onclick="logout('warga')" class="text-sm font-bold text-danger hover:bg-danger/10 px-3 py-2 rounded-lg transition-colors ml-2">Keluar</button>
                 </div>
             </div>
@@ -81,6 +94,7 @@
                     <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">Kawal rincian pengeluaran dana kas desa secara transparan dari laporan Kades/Admin.</p>
                     <button onclick="openModal('modalTransparansi')" class="btn-primary !bg-danger hover:!bg-red-700 w-full sm:w-auto shadow-[0_8px_25px_rgba(239,68,68,0.5)]">Lihat Rincian Pengeluaran</button>
                 </article>
+
                 <article class="panel-theme p-8 border-t-4 border-t-primary">
                     <div class="text-4xl mb-4">💳</div>
                     <h2 class="text-2xl font-bold mb-3">Bayar Kas Desa</h2>
@@ -96,7 +110,7 @@
         <div class="panel-theme relative w-full max-w-2xl p-6 sm:p-8 shadow-2xl z-10 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold">Bukti Pengeluaran Kas Desa</h3>
-                <button onclick="closeModal('modalTransparansi')" class="text-2xl opacity-70">✕</button>
+                <button onclick="closeModal('modalTransparansi')" class="text-2xl opacity-70 hover:text-danger">✕</button>
             </div>
             
             <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
@@ -116,8 +130,8 @@
             <div class="flex justify-between items-center px-2">
                 <span id="pageInfo" class="text-xs text-slate-500 font-bold uppercase">Halaman 1 dari 1</span>
                 <div class="flex gap-2">
-                    <button onclick="prevPage()" class="px-3 py-1 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs font-bold hover:bg-primary hover:text-white transition-colors">Sebelumnya</button>
-                    <button onclick="nextPage()" class="px-3 py-1 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs font-bold hover:bg-primary hover:text-white transition-colors">Selanjutnya</button>
+                    <button onclick="prevPage()" class="px-3 py-1 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs font-bold hover:bg-primary hover:text-white transition-colors shadow-sm">Sebelumnya</button>
+                    <button onclick="nextPage()" class="px-3 py-1 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs font-bold hover:bg-primary hover:text-white transition-colors shadow-sm">Selanjutnya</button>
                 </div>
             </div>
         </div>
