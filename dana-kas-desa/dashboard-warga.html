@@ -30,23 +30,21 @@
             .skeleton { @apply animate-pulse bg-slate-300 dark:bg-slate-700 h-8 w-3/4 rounded mx-auto mb-2; }
             .icon-btn { @apply w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 bg-transparent text-slate-800 dark:text-slate-100 flex justify-center items-center cursor-pointer transition-all duration-300 hover:scale-105 hover:bg-slate-800 hover:text-white dark:hover:bg-white dark:hover:text-slate-800; }
             
-            /* GLASS INPUT */
             .glass-input { @apply w-full px-4 py-3 rounded-lg mt-1 outline-none text-sm transition-all duration-300; }
             [data-theme="light"] .glass-input { background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.15); color: #333; }
             [data-theme="dark"] .glass-input { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; }
             [data-theme="dark"] .glass-input option { background: #1e293b; color: #fff; }
             .glass-input:focus { border-color: #10b981 !important; box-shadow: 0 0 0 3px rgba(16,185,129,0.2); }
             
-            /* ANIMASI LOADING (TITIK LOMPAT) */
             .dot-flashing { position: relative; width: 15px; height: 15px; border-radius: 5px; background-color: #10b981; animation: dot-flashing 1s infinite linear alternate; animation-delay: 0.5s; }
             .dot-flashing::before, .dot-flashing::after { content: ''; display: inline-block; position: absolute; top: 0; width: 15px; height: 15px; border-radius: 5px; background-color: #10b981; }
             .dot-flashing::before { left: -25px; animation: dot-flashing 1s infinite alternate; animation-delay: 0s; }
             .dot-flashing::after { left: 25px; animation: dot-flashing 1s infinite alternate; animation-delay: 1s; }
             @keyframes dot-flashing { 0% { background-color: #10b981; transform: translateY(0); } 50%, 100% { background-color: rgba(16, 185, 129, 0.2); transform: translateY(-15px); } }
             
-            /* ANIMASI POP-UP TENGAH */
-            @keyframes bounce-short { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-            .animate-bounce-short { animation: bounce-short 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+            /* Custom Scrollbar untuk Tabel */
+            .scrollbar-hide::-webkit-scrollbar { display: none; }
+            .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         }
     </style>
 </head>
@@ -68,9 +66,9 @@
                 <a href="#" class="text-2xl font-extrabold tracking-tight">Kop<span class="text-primary">Des</span></a>
                 <div class="flex items-center gap-4 md:gap-6">
                     <a href="dana-desa.html" class="hidden md:block font-medium opacity-80 hover:text-primary transition-colors mr-2">Beranda</a>
-                    <button id="toggleTheme" class="icon-btn" title="Ganti Tema"></button>
-                    <button id="toggleStyle" class="icon-btn" title="Ganti Gaya"></button>
-                    <button onclick="logoutWarga()" class="text-sm font-bold text-danger hover:bg-danger/10 px-3 py-2 rounded-lg transition-colors ml-2">Keluar</button>
+                    <button id="toggleTheme" class="icon-btn" title="Ganti Tema">🌙</button>
+                    <button id="toggleStyle" class="icon-btn" title="Ganti Gaya">✨</button>
+                    <button onclick="logout('warga')" class="text-sm font-bold text-danger hover:bg-danger/10 px-3 py-2 rounded-lg transition-colors ml-2">Keluar</button>
                 </div>
             </div>
         </nav>
@@ -82,122 +80,107 @@
             </header>
 
             <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <article class="panel-theme card-hover p-8 text-center">
+                <article class="panel-theme card-hover p-8 text-center border-t-4 border-t-primary">
                     <h3 class="text-sm font-semibold opacity-80 mb-3 uppercase tracking-wide">Total Saldo Kas Desa</h3>
                     <div id="saldoSkeleton" class="skeleton"></div>
                     <p id="totalSaldo" class="text-3xl font-bold text-primary mb-2 hidden">Rp 0</p>
-                    <span class="text-xs opacity-60">Terupdate hari ini</span>
+                    <span class="text-xs opacity-60">Sisa saldo saat ini</span>
                 </article>
 
-                <article class="panel-theme card-hover p-8 text-center">
-                    <h3 class="text-sm font-semibold opacity-80 mb-3 uppercase tracking-wide">Pinjaman Aktif Anda</h3>
-                    <div id="pinjamanSkeleton" class="skeleton"></div>
-                    <p id="pinjamanAktif" class="text-3xl font-bold text-danger mb-2 hidden">Rp 0</p>
-                    <span id="pinjamanStatus" class="text-xs opacity-60 hidden">Tidak ada pinjaman</span>
+                <article class="panel-theme card-hover p-8 text-center border-t-4 border-t-danger">
+                    <h3 class="text-sm font-semibold opacity-80 mb-3 uppercase tracking-wide">Total Pengeluaran Desa</h3>
+                    <div id="pengeluaranSkeleton" class="skeleton"></div>
+                    <p id="totalPengeluaran" class="text-3xl font-bold text-danger mb-2 hidden">Rp 0</p>
+                    <span class="text-xs opacity-60 font-bold text-danger">Transparansi Dana Desa</span>
                 </article>
 
-                <article class="panel-theme card-hover p-8 text-center">
-                    <h3 class="text-sm font-semibold opacity-80 mb-3 uppercase tracking-wide">Iuran Terbayar</h3>
+                <article class="panel-theme card-hover p-8 text-center border-t-4 border-t-blue-500">
+                    <h3 class="text-sm font-semibold opacity-80 mb-3 uppercase tracking-wide">Iuran Terbayar Anda</h3>
                     <div id="iuranSkeleton" class="skeleton"></div>
-                    <p id="iuranTerbayar" class="text-3xl font-bold text-primary mb-2 hidden">0/12 Bulan</p>
+                    <p id="iuranTerbayar" class="text-3xl font-bold text-blue-500 mb-2 hidden">0/12 Bulan</p>
                     <span id="iuranStatus" class="text-xs opacity-60 hidden">Status: Memuat...</span>
                 </article>
             </section>
 
             <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <article class="panel-theme p-8 border-t-4 border-t-primary">
-                    <h2 class="text-2xl font-bold mb-3">Pinjaman Darurat</h2>
-                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">Butuh dana mendesak? Ajukan pinjaman dengan proses cepat dan transparan khusus warga desa. Memerlukan verifikasi KTP dan wajah.</p>
-                    <button onclick="openAjukanModal()" class="btn-primary w-full sm:w-auto">Ajukan Pinjaman Baru</button>
+                <article class="panel-theme p-8 border-t-4 border-t-danger">
+                    <div class="text-4xl mb-4">📈</div>
+                    <h2 class="text-2xl font-bold mb-3">Transparansi Dana Desa</h2>
+                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
+                        Kawal dan pantau rincian pengeluaran dana kas desa secara transparan. Laporan ini di-update secara real-time berdasarkan laporan dari Kades/Admin.
+                    </p>
+                    <button onclick="openModal('modalTransparansi')" class="btn-primary !bg-danger hover:!bg-red-700 w-full sm:w-auto shadow-[0_8px_20px_rgba(239,68,68,0.4)]">
+                        Lihat Rincian Pengeluaran
+                    </button>
                 </article>
 
                 <article class="panel-theme p-8 border-t-4 border-t-primary">
+                    <div class="text-4xl mb-4">💳</div>
                     <h2 class="text-2xl font-bold mb-3">Bayar Kas Desa</h2>
-                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">Setorkan iuran bulanan atau sumbangan sukarela Anda untuk pembangunan desa yang lebih baik.</p>
-                    <button onclick="openBayarModal()" class="btn-outline w-full sm:w-auto">Bayar Kas Sekarang</button>
+                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
+                        Setorkan iuran bulanan atau sumbangan sukarela Anda untuk pembangunan desa yang lebih baik secara online.
+                    </p>
+                    <button onclick="openModal('modalBayarKas')" class="btn-outline w-full sm:w-auto">
+                        Bayar Kas Sekarang
+                    </button>
                 </article>
             </section>
         </main>
     </div>
 
-    <div id="modalAjukanPinjaman" class="fixed inset-0 z-[100] hidden items-center justify-center">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeAjukanModal()"></div>
-        <div class="panel-theme relative w-full max-w-md p-6 m-4 shadow-2xl z-10 max-h-[90vh] overflow-y-auto">
+    <div id="modalTransparansi" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('modalTransparansi')"></div>
+        <div class="panel-theme relative w-full max-w-2xl p-6 sm:p-8 shadow-2xl z-10 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-primary">Form Pengajuan Pinjaman</h3>
-                <button onclick="closeAjukanModal()" class="text-2xl opacity-70 hover:text-danger">✕</button>
+                <h3 class="text-xl font-bold text-slate-800 dark:text-white">Bukti Pengeluaran Kas Desa</h3>
+                <button onclick="closeModal('modalTransparansi')" class="text-2xl opacity-70 hover:text-danger">✕</button>
+            </div>
+            <p class="text-sm text-slate-500 mb-6">Berikut adalah riwayat pengeluaran (Kredit) dana desa yang tercatat di sistem secara real-time.</p>
+            
+            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 scrollbar-hide">
+                <table class="w-full text-left border-collapse min-w-[500px]">
+                    <thead>
+                        <tr class="bg-slate-100 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+                            <th class="p-4 text-xs font-bold uppercase tracking-wider">Tanggal</th>
+                            <th class="p-4 text-xs font-bold uppercase tracking-wider">Keterangan Penggunaan</th>
+                            <th class="p-4 text-xs font-bold uppercase tracking-wider">Nominal</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 dark:divide-slate-700 text-sm">
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <td class="p-4 text-slate-500">15 Mei 2026</td>
+                            <td class="p-4 font-medium">Pencairan Dana Bencana Alam</td>
+                            <td class="p-4 font-bold text-danger">- Rp 2.000.000</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <td class="p-4 text-slate-500">20 Mei 2026</td>
+                            <td class="p-4 font-medium">Perbaikan Atap Balai Warga</td>
+                            <td class="p-4 font-bold text-danger">- Rp 5.500.000</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <td class="p-4 text-slate-500">22 Mei 2026</td>
+                            <td class="p-4 font-medium">Bantuan Modal UMKM Ibu Siti</td>
+                            <td class="p-4 font-bold text-danger">- Rp 1.500.000</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             
-            <form id="formAjukanPinjaman" onsubmit="submitPinjaman(event)" class="space-y-4">
-                <div>
-                    <label class="text-xs font-bold opacity-80 uppercase tracking-wide">Nominal Pinjaman (Rp)</label>
-                    <input type="number" id="wargaNominal" class="glass-input" required placeholder="Cth: 2000000" min="50000">
-                </div>
-                
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-xs font-bold opacity-80 uppercase tracking-wide">Jenis Bank/E-Wallet</label>
-                        <select id="wargaJenisBank" class="glass-input" required>
-                            <option value="BCA">BCA</option>
-                            <option value="Mandiri">Mandiri</option>
-                            <option value="BNI">BNI</option>
-                            <option value="BRI">BRI</option>
-                            <option value="DANA">DANA</option>
-                            <option value="GOPAY">GOPAY</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold opacity-80 uppercase tracking-wide">Nomor Rekening</label>
-                        <input type="number" id="wargaNoRek" class="glass-input" required placeholder="123456xxxx">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="text-xs font-bold opacity-80 uppercase tracking-wide">Alasan Peminjaman</label>
-                    <textarea id="wargaAlasan" class="glass-input" required rows="2" placeholder="Jelaskan keperluan dana ini untuk apa..."></textarea>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="border border-dashed border-slate-400 p-3 rounded-lg text-center relative overflow-hidden hover:bg-primary/10 transition">
-                        <label class="text-[10px] font-bold block mb-1 cursor-pointer">📸 FOTO KTP</label>
-                        <input type="file" accept="image/*" capture="environment" required class="absolute inset-0 opacity-0 cursor-pointer">
-                        <div class="bg-slate-200 dark:bg-slate-700 text-[10px] py-1 rounded">Unggah / Kamera</div>
-                    </div>
-                    <div class="border border-dashed border-slate-400 p-3 rounded-lg text-center relative overflow-hidden hover:bg-primary/10 transition">
-                        <label class="text-[10px] font-bold block mb-1 cursor-pointer">🤳 FOTO SELFIE</label>
-                        <input type="file" accept="image/*" capture="user" required class="absolute inset-0 opacity-0 cursor-pointer">
-                        <div class="bg-slate-200 dark:bg-slate-700 text-[10px] py-1 rounded">Unggah / Kamera</div>
-                    </div>
-                </div>
-
-                <div class="bg-warning/20 text-warning p-3 rounded-lg text-xs font-bold text-center mt-2">
-                    Pinjaman akan ditinjau oleh Admin/Kades.
-                </div>
-                <button type="submit" class="btn-primary w-full mt-2">Kirim Pengajuan</button>
-            </form>
+            <div class="mt-6 p-4 bg-danger/10 rounded-xl flex justify-between items-center">
+                <span class="text-sm font-bold text-slate-700 dark:text-slate-300">Total Pengeluaran:</span>
+                <span class="text-xl font-extrabold text-danger">Rp 9.000.000</span>
+            </div>
         </div>
     </div>
 
-    <div id="loanSuccessModal" class="fixed inset-0 z-[110] hidden items-center justify-center">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-md" onclick="closeLoanSuccessModal()"></div>
-        <div class="panel-theme relative w-full max-w-sm p-8 m-4 shadow-2xl z-10 text-center animate-bounce-short">
-            <div class="w-20 h-20 bg-primary/20 text-primary rounded-full flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg border-2 border-primary">✓</div>
-            <h3 class="text-2xl font-bold text-primary mb-2">Pengajuan Terkirim!</h3>
-            <p class="text-sm opacity-80 mb-6 leading-relaxed">
-                Data Anda sedang diverifikasi. Silakan pantau kartu <span class="font-bold">"Pinjaman Aktif"</span> di dashboard Anda untuk melihat status persetujuan.
-            </p>
-            <button onclick="closeLoanSuccessModal()" class="btn-primary w-full shadow-lg">Siap, Mengerti</button>
-        </div>
-    </div>
-
-    <div id="modalBayarKas" class="fixed inset-0 z-[100] hidden items-center justify-center">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeBayarModal()"></div>
-        <div class="panel-theme relative w-full max-w-sm p-6 m-4 shadow-2xl z-10 text-center">
+    <div id="modalBayarKas" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('modalBayarKas')"></div>
+        <div class="panel-theme relative w-full max-w-sm p-6 sm:p-8 shadow-2xl z-10 text-center">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold text-primary">Bayar Iuran Kas</h3>
-                <button onclick="closeBayarModal()" class="text-2xl opacity-70 hover:text-danger">✕</button>
+                <button onclick="closeModal('modalBayarKas')" class="text-2xl opacity-70 hover:text-danger">✕</button>
             </div>
-            <form onsubmit="submitBayar(event)" class="space-y-4 text-left">
+            <form onsubmit="event.preventDefault(); alert('Mengalihkan ke Payment Gateway...'); closeModal('modalBayarKas');" class="space-y-4 text-left">
                 <div>
                     <label class="text-xs font-bold opacity-80">Metode Pembayaran</label>
                     <select class="glass-input" required>
@@ -214,7 +197,7 @@
                         <option value="12">1 Tahun (Rp 600.000)</option>
                     </select>
                 </div>
-                <button type="submit" class="btn-primary w-full mt-4">Lanjutkan Pembayaran</button>
+                <button type="submit" class="btn-primary w-full mt-6">Lanjutkan Pembayaran</button>
             </form>
         </div>
     </div>
