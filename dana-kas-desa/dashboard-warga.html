@@ -2,7 +2,7 @@
 <html lang="id" class="transition-colors duration-300" data-theme="light" data-style="glass">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dashboard Warga - KopDes</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,28 +21,29 @@
     
     <style type="text/tailwindcss">
         @layer components {
+            /* 1. Efek Glasshomorphism HANYA untuk Komponen UI */
             .panel-theme { @apply bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm transition-all duration-500 rounded-2xl; }
             html[data-style="glass"] .panel-theme { @apply bg-white/40 dark:bg-slate-900/50 backdrop-blur-xl border-white/60 dark:border-white/10 shadow-[0_8px_32px_0_rgba(16,185,129,0.15)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.4)]; }
             
-            .btn-primary { @apply inline-block px-6 py-3 bg-primary hover:bg-primaryDark text-white font-bold rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(16,185,129,0.4)] text-center; }
-            .btn-outline { @apply inline-block px-6 py-3 bg-transparent backdrop-blur-md border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(16,185,129,0.3)] text-center; }
+            /* 2. Tombol Dasar */
+            .btn-primary { @apply inline-block px-6 py-3 bg-primary hover:bg-primaryDark text-white font-bold rounded-xl transition-all duration-300 hover:-translate-y-1 text-center cursor-pointer; }
             .card-hover { @apply transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_15px_30px_rgba(16,185,129,0.2)] hover:border-primary/50 relative overflow-hidden; }
             .skeleton { @apply animate-pulse bg-slate-300 dark:bg-slate-700 h-8 w-3/4 rounded mx-auto mb-2; }
-            .icon-btn { @apply w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 bg-transparent text-slate-800 dark:text-slate-100 flex justify-center items-center cursor-pointer transition-all duration-300 hover:scale-105 hover:bg-slate-800 hover:text-white dark:hover:bg-white dark:hover:text-slate-800; }
+            .icon-btn { @apply w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 text-slate-800 dark:text-slate-100 flex justify-center items-center cursor-pointer transition-all duration-300 hover:scale-105; }
             
+            /* 3. Glass Input */
             .glass-input { @apply w-full px-4 py-3 rounded-lg mt-1 outline-none text-sm transition-all duration-300; }
             [data-theme="light"] .glass-input { background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.15); color: #333; }
             [data-theme="dark"] .glass-input { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; }
-            [data-theme="dark"] .glass-input option { background: #1e293b; color: #fff; }
             .glass-input:focus { border-color: #10b981 !important; box-shadow: 0 0 0 3px rgba(16,185,129,0.2); }
             
+            /* 4. Animasi Loading */
             .dot-flashing { position: relative; width: 15px; height: 15px; border-radius: 5px; background-color: #10b981; animation: dot-flashing 1s infinite linear alternate; animation-delay: 0.5s; }
             .dot-flashing::before, .dot-flashing::after { content: ''; display: inline-block; position: absolute; top: 0; width: 15px; height: 15px; border-radius: 5px; background-color: #10b981; }
             .dot-flashing::before { left: -25px; animation: dot-flashing 1s infinite alternate; animation-delay: 0s; }
             .dot-flashing::after { left: 25px; animation: dot-flashing 1s infinite alternate; animation-delay: 1s; }
             @keyframes dot-flashing { 0% { background-color: #10b981; transform: translateY(0); } 50%, 100% { background-color: rgba(16, 185, 129, 0.2); transform: translateY(-15px); } }
             
-            /* Custom Scrollbar untuk Tabel */
             .scrollbar-hide::-webkit-scrollbar { display: none; }
             .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         }
@@ -56,7 +57,7 @@
     </div>
 
     <div id="dashboardContent" class="opacity-0 transition-opacity duration-700">
-        <div id="liquidBg" aria-hidden="true" class="fixed inset-0 -z-10 blur-[40px] opacity-0 transition-opacity duration-500 html-[data-style='glass']:opacity-85">
+        <div id="liquidBg" aria-hidden="true" class="fixed inset-0 -z-10 blur-[40px] opacity-85 transition-opacity duration-500">
             <div class="absolute rounded-full animate-liquid bg-blob-1 dark:bg-blobDark-1 w-[400px] h-[400px] top-[-10%] left-[-5%] transition-colors duration-500"></div>
             <div class="absolute rounded-full animate-liquid bg-blob-2 dark:bg-blobDark-2 w-[500px] h-[500px] bottom-[-10%] right-[-5%] animation-delay-[4s] transition-colors duration-500"></div>
         </div>
@@ -94,7 +95,7 @@
                     <span class="text-xs opacity-60 font-bold text-danger">Transparansi Dana Desa</span>
                 </article>
 
-                <article class="panel-theme card-hover p-8 text-center border-t-4 border-t-blue-500">
+                <article className="panel-theme card-hover p-8 text-center border-t-4 border-t-blue-500">
                     <h3 class="text-sm font-semibold opacity-80 mb-3 uppercase tracking-wide">Iuran Terbayar Anda</h3>
                     <div id="iuranSkeleton" class="skeleton"></div>
                     <p id="iuranTerbayar" class="text-3xl font-bold text-blue-500 mb-2 hidden">0/12 Bulan</p>
@@ -109,7 +110,7 @@
                     <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
                         Kawal dan pantau rincian pengeluaran dana kas desa secara transparan. Laporan ini di-update secara real-time berdasarkan laporan dari Kades/Admin.
                     </p>
-                    <button onclick="openModal('modalTransparansi')" class="btn-primary !bg-danger hover:!bg-red-700 w-full sm:w-auto shadow-[0_8px_20px_rgba(239,68,68,0.4)]">
+                    <button onclick="openModal('modalTransparansi')" class="btn-primary !bg-danger hover:!bg-red-700 w-full sm:w-auto shadow-[0_8px_25px_rgba(239,68,68,0.5)]">
                         Lihat Rincian Pengeluaran
                     </button>
                 </article>
@@ -120,7 +121,7 @@
                     <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
                         Setorkan iuran bulanan atau sumbangan sukarela Anda untuk pembangunan desa yang lebih baik secara online.
                     </p>
-                    <button onclick="openModal('modalBayarKas')" class="btn-outline w-full sm:w-auto">
+                    <button onclick="openModal('modalBayarKas')" class="btn-primary w-full sm:w-auto shadow-[0_8px_25px_rgba(16,185,129,0.5)]">
                         Bayar Kas Sekarang
                     </button>
                 </article>
@@ -130,7 +131,7 @@
 
     <div id="modalTransparansi" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('modalTransparansi')"></div>
-        <div class="panel-theme relative w-full max-w-2xl p-6 sm:p-8 shadow-2xl z-10 max-h-[90vh] overflow-y-auto">
+        <div class="panel-theme relative w-full max-w-2xl p-6 sm:p-8 shadow-2xl z-10 max-h-[90vh] overflow-y-auto animate-fade-in-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold text-slate-800 dark:text-white">Bukti Pengeluaran Kas Desa</h3>
                 <button onclick="closeModal('modalTransparansi')" class="text-2xl opacity-70 hover:text-danger">✕</button>
@@ -175,7 +176,7 @@
 
     <div id="modalBayarKas" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('modalBayarKas')"></div>
-        <div class="panel-theme relative w-full max-w-sm p-6 sm:p-8 shadow-2xl z-10 text-center">
+        <div class="panel-theme relative w-full max-w-sm p-6 sm:p-8 shadow-2xl z-10 text-center animate-fade-in-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold text-primary">Bayar Iuran Kas</h3>
                 <button onclick="closeModal('modalBayarKas')" class="text-2xl opacity-70 hover:text-danger">✕</button>
@@ -197,7 +198,7 @@
                         <option value="12">1 Tahun (Rp 600.000)</option>
                     </select>
                 </div>
-                <button type="submit" class="btn-primary w-full mt-6">Lanjutkan Pembayaran</button>
+                <button type="submit" class="btn-primary w-full mt-6 shadow-[0_8px_20px_rgba(16,185,129,0.3)]">Lanjutkan Pembayaran</button>
             </form>
         </div>
     </div>
