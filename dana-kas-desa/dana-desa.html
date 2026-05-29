@@ -6,7 +6,6 @@
     <title>DesaDigital - Kelola Kas Desa</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <script>
@@ -15,7 +14,7 @@
             theme: {
                 extend: {
                     colors: { 
-                        primary: '#10b981', primaryDark: '#059669', 
+                        primary: '#10b981', primaryDark: '#059669', danger: '#ef4444',
                         blob: { 1: '#34d399', 2: '#10b981', 3: '#059669' }, 
                         blobDark: { 1: '#059669', 2: '#047857', 3: '#0f766e' } 
                     },
@@ -73,14 +72,6 @@
                 
                 <div class="flex items-center gap-2 border-l border-slate-300 dark:border-slate-700 pl-2 sm:pl-4 ml-1">
                     <a href="login-desa.html" class="btn-primary py-1.5 px-3 sm:py-2 sm:px-5 text-[11px] sm:text-sm shadow-md whitespace-nowrap">Login Warga</a>
-                    
-                    <div class="hidden sm:flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
-                        <img src="https://ui-avatars.com/api/?name=Warga+Desa&background=10b981&color=fff" alt="Profil" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-primary shadow-sm">
-                        <div class="flex flex-col hidden md:flex text-left">
-                            <span class="text-sm font-bold leading-tight">Warga Desa</span>
-                            <span class="text-[10px] text-primary leading-tight font-bold">Aktif</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -95,11 +86,11 @@
                 <span id="text-typewriter" class="text-primary typing-cursor inline-block mt-1 sm:mt-2 min-h-[1.2em]"></span>
             </h1>
 
-            <p data-aos="fade-up" data-aos-delay="500" class="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mt-2 px-2">Solusi bantuan finansial darurat dan pembayaran iuran kas desa yang transparan, cepat, dan aman langsung dari genggaman Anda.</p>
+            <p data-aos="fade-up" data-aos-delay="500" class="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mt-2 px-2">Solusi pengelolaan dan pembayaran iuran kas desa yang transparan, cepat, dan aman langsung dari genggaman Anda.</p>
             
-            <div data-aos="fade-up" data-aos-delay="700" class="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8 w-full sm:w-auto px-4 sm:px-0">
-                <a href="#fitur" class="btn-primary w-full sm:w-auto text-base sm:text-lg py-3">Ajukan Pinjaman</a>
-                <a href="#fitur" class="btn-outline w-full sm:w-auto text-base sm:text-lg py-3">Bayar Kas Sekarang</a>
+            <div data-aos="fade-up" data-aos-delay="700" class="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-6 sm:mt-8 w-full sm:w-auto px-4 sm:px-0">
+                <a href="#fitur" class="btn-primary w-full sm:w-auto text-base sm:text-lg py-3">Pantau Kas Desa</a>
+                <a href="login-desa.html" class="btn-outline w-full sm:w-auto text-base sm:text-lg py-3 bg-white/50 dark:bg-slate-800/50">Masuk Portal Warga</a>
             </div>
         </div>
     </header>
@@ -181,18 +172,20 @@
                 <h2 class="text-3xl sm:text-4xl font-extrabold mb-3 sm:mb-4">Layanan Utama Kami</h2>
                 <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-xl mx-auto">Platform digital terpadu untuk kesejahteraan bersama.</p>
             </div>
+            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10">
-                <article class="panel-theme card-hover p-6 sm:p-8 flex flex-col h-full" data-aos="fade-right" data-aos-delay="100">
-                    <div class="text-4xl sm:text-5xl mb-4 sm:mb-6 relative z-10">🚑</div>
-                    <h3 class="text-xl sm:text-2xl font-bold mb-2 sm:mb-3 relative z-10">Pinjaman Darurat</h3>
-                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed mb-6 sm:mb-8 flex-1 relative z-10">Butuh dana mendesak untuk kesehatan atau musibah? Ajukan sekarang dengan proses verifikasi dari Kades kurang dari 24 jam.</p>
-                    <button onclick="window.location.href='login-desa.html'" class="btn-primary w-full relative z-10">Ajukan Pinjaman Sekarang</button>
+                <article class="panel-theme card-hover p-6 sm:p-8 flex flex-col h-full border-t-4 border-t-danger" data-aos="fade-right" data-aos-delay="100">
+                    <div class="text-4xl sm:text-5xl mb-4 sm:mb-6 relative z-10">📈</div>
+                    <h3 class="text-xl sm:text-2xl font-bold mb-2 sm:mb-3 relative z-10">Transparansi Dana Desa</h3>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed mb-6 sm:mb-8 flex-1 relative z-10">Kawal rincian pengeluaran dana kas desa secara transparan. Laporan ini di-update secara real-time berdasarkan laporan dari Kades/Admin.</p>
+                    <button onclick="window.location.href='login-desa.html'" class="btn-primary !bg-danger hover:!bg-red-700 w-full relative z-10 shadow-[0_8px_25px_rgba(239,68,68,0.5)]">Lihat Rincian Pengeluaran</button>
                 </article>
-                <article class="panel-theme card-hover p-6 sm:p-8 flex flex-col h-full" data-aos="fade-left" data-aos-delay="300">
+
+                <article class="panel-theme card-hover p-6 sm:p-8 flex flex-col h-full border-t-4 border-t-primary" data-aos="fade-left" data-aos-delay="300">
                     <div class="text-4xl sm:text-5xl mb-4 sm:mb-6 relative z-10">💳</div>
                     <h3 class="text-xl sm:text-2xl font-bold mb-2 sm:mb-3 relative z-10">Bayar Kas Desa</h3>
-                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed mb-6 sm:mb-8 flex-1 relative z-10">Bayar iuran bulanan jadi lebih mudah, cepat, dan tercatat otomatis melalui Transfer Bank atau secara Cash langsung ke balai desa.</p>
-                    <button onclick="window.location.href='login-desa.html'" class="btn-outline w-full bg-white/80 dark:bg-slate-800/80 relative z-10">Cash & Transfer Online</button>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed mb-6 sm:mb-8 flex-1 relative z-10">Setorkan iuran bulanan atau sumbangan sukarela Anda untuk pembangunan desa yang lebih baik secara online.</p>
+                    <button onclick="window.location.href='login-desa.html'" class="btn-primary w-full relative z-10 shadow-[0_8px_25px_rgba(16,185,129,0.5)]">Bayar Kas Sekarang</button>
                 </article>
             </div>
         </div>
@@ -216,13 +209,8 @@
     </footer>
 
     <script src="desa-api.js"></script>
-    
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
     <script>
-        // KODE TEMA YANG LAMA (YANG BENTROK) SUDAH SAYA HAPUS.
-        // Script di bawah ini HANYA untuk Animasi AOS, Mesin Ketik, dan Carousel.
-
         document.addEventListener("DOMContentLoaded", function() {
             AOS.init({ once: false, mirror: true, duration: 800, offset: 50 });
 
@@ -277,7 +265,7 @@
         track.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
         track.addEventListener('mouseleave', startAutoScroll);
 
-        // Smooth Scroll untuk Navigasi Header
+        // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
