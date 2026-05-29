@@ -9,18 +9,16 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <script>
+        // Konfigurasi Tailwind dibersihkan dari warna blob/cairan
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: { 
-                        primary: '#10b981', primaryDark: '#059669', danger: '#ef4444',
-                        blob: { 1: '#34d399', 2: '#10b981', 3: '#059669' }, 
-                        blobDark: { 1: '#059669', 2: '#047857', 3: '#0f766e' } 
+                        primary: '#10b981', primaryDark: '#059669', danger: '#ef4444'
                     },
-                    animation: { 'liquid': 'liquidAnim 15s infinite alternate ease-in-out', 'float': 'floating 3s ease-in-out infinite' },
+                    animation: { 'float': 'floating 3s ease-in-out infinite' },
                     keyframes: { 
-                        liquidAnim: { '0%': { transform: 'translate(0, 0) scale(1)' }, '100%': { transform: 'translate(40px, 40px) scale(1.1)' } }, 
                         floating: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } } 
                     }
                 }
@@ -30,13 +28,13 @@
     
     <style type="text/tailwindcss">
         @layer components {
-            .panel-theme { @apply bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm transition-all duration-500 rounded-2xl; }
-            html[data-style="glass"] .panel-theme { @apply bg-white/40 dark:bg-slate-900/50 backdrop-blur-xl border-white/60 dark:border-white/10 shadow-[0_8px_32px_0_rgba(16,185,129,0.15)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.4)]; }
+            /* Efek Glassmorphism Dibuat Permanen Untuk Panel/Card */
+            .panel-theme { @apply bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-lg transition-all duration-500 rounded-2xl; }
             
             .btn-primary { @apply inline-block px-4 sm:px-6 py-2.5 sm:py-3 bg-primary hover:bg-primaryDark text-white font-bold rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(16,185,129,0.4)] text-center; }
-            .btn-outline { @apply inline-block px-4 sm:px-6 py-2.5 sm:py-3 bg-transparent backdrop-blur-md border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(16,185,129,0.3)] text-center; }
+            .btn-outline { @apply inline-block px-4 sm:px-6 py-2.5 sm:py-3 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(16,185,129,0.3)] text-center; }
             
-            .icon-btn { @apply w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-slate-200 dark:border-slate-700 bg-transparent text-slate-800 dark:text-slate-100 flex justify-center items-center cursor-pointer transition-all duration-300 hover:scale-105 hover:bg-slate-800 hover:text-white dark:hover:bg-white dark:hover:text-slate-800; }
+            .icon-btn { @apply w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md text-slate-800 dark:text-slate-100 flex justify-center items-center cursor-pointer transition-all duration-300 hover:scale-105; }
             .card-hover { @apply relative overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_15px_30px_rgba(16,185,129,0.2)] hover:border-primary/50; }
             
             .typing-cursor::after { content: "|"; @apply text-primary ml-1; animation: blink 0.7s infinite; }
@@ -47,13 +45,7 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-primary selection:text-white relative transition-colors duration-300">
-
-    <div id="liquidBg" aria-hidden="true" class="fixed inset-0 -z-10 blur-[40px] opacity-85 transition-opacity duration-500">
-        <div class="absolute rounded-full animate-liquid bg-blob-1 dark:bg-blobDark-1 w-[300px] md:w-[500px] h-[300px] md:h-[500px] top-[-10%] left-[-5%] transition-colors duration-500"></div>
-        <div class="absolute rounded-full animate-liquid bg-blob-2 dark:bg-blobDark-2 w-[400px] md:w-[600px] h-[400px] md:h-[600px] bottom-[-10%] right-[-10%] animation-delay-[4s] transition-colors duration-500"></div>
-        <div class="absolute rounded-full animate-liquid bg-blob-3 dark:bg-blobDark-3 w-[250px] md:w-[400px] h-[250px] md:h-[400px] top-[40%] left-[30%] animation-delay-[8s] transition-colors duration-500"></div>
-    </div>
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-primary selection:text-white relative transition-colors duration-300">
 
     <nav class="fixed top-2 sm:top-4 left-0 right-0 z-50 px-2 sm:px-4 md:px-8 flex justify-center" data-aos="fade-down" data-aos-duration="1000">
         <div class="panel-theme w-full max-w-6xl px-3 sm:px-6 py-3 flex justify-between items-center">
@@ -64,11 +56,10 @@
                     <li><a href="#beranda" class="hover:text-primary transition-colors">Beranda</a></li>
                     <li><a href="#fitur" class="hover:text-primary transition-colors">Layanan</a></li>
                     <li><a href="#galeri" class="hover:text-primary transition-colors">Galeri</a></li>
-                    <li><a href="../login-admin.html" class="hover:text-primary transition-colors border-l-2 border-slate-300 dark:border-slate-600 pl-6">Portal Admin</a></li>
+                    <li><a href="login-admin.html" class="hover:text-primary transition-colors border-l-2 border-slate-300 dark:border-slate-600 pl-6">Portal Admin</a></li>
                 </ul>
                 
                 <button id="toggleTheme" class="icon-btn" title="Ganti Tema"></button>
-                <button id="toggleStyle" class="icon-btn" title="Ganti Gaya"></button>
                 
                 <div class="flex items-center gap-2 border-l border-slate-300 dark:border-slate-700 pl-2 sm:pl-4 ml-1">
                     <a href="login-desa.html" class="btn-primary py-1.5 px-3 sm:py-2 sm:px-5 text-[11px] sm:text-sm shadow-md whitespace-nowrap">Login Warga</a>
@@ -90,7 +81,7 @@
             
             <div data-aos="fade-up" data-aos-delay="700" class="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-6 sm:mt-8 w-full sm:w-auto px-4 sm:px-0">
                 <a href="#fitur" class="btn-primary w-full sm:w-auto text-base sm:text-lg py-3">Pantau Kas Desa</a>
-                <a href="login-desa.html" class="btn-outline w-full sm:w-auto text-base sm:text-lg py-3 bg-white/50 dark:bg-slate-800/50">Masuk Portal Warga</a>
+                <a href="login-desa.html" class="btn-outline w-full sm:w-auto text-base sm:text-lg py-3">Masuk Portal Warga</a>
             </div>
         </div>
     </header>
@@ -125,7 +116,7 @@
             <div class="relative group" data-aos="zoom-in" data-aos-delay="200">
                 <div id="carouselTrack" class="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-8 pt-4 px-2 sm:px-4 scrollbar-hide">
                     
-                    <div class="snap-center shrink-0 w-[260px] sm:w-80 panel-theme overflow-hidden rounded-2xl card-hover group/card">
+                    <div class="snap-center shrink-0 w-[260px] sm:w-80 panel-theme overflow-hidden rounded-2xl card-hover group/card border-t-4 border-t-primary">
                         <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=500&q=80" alt="Bantuan Modal" class="w-full h-40 sm:h-48 object-cover group-hover/card:scale-110 transition-transform duration-700">
                         <div class="p-4 sm:p-5">
                             <span class="text-[10px] sm:text-xs font-bold text-primary mb-1 block">Januari 2026</span>
@@ -133,7 +124,7 @@
                             <p class="text-xs sm:text-sm text-slate-500">Pencairan dana untuk warung Ibu Siti Aminah.</p>
                         </div>
                     </div>
-                    <div class="snap-center shrink-0 w-[260px] sm:w-80 panel-theme overflow-hidden rounded-2xl card-hover group/card">
+                    <div class="snap-center shrink-0 w-[260px] sm:w-80 panel-theme overflow-hidden rounded-2xl card-hover group/card border-t-4 border-t-primary">
                         <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&q=80" alt="Pasar Desa" class="w-full h-40 sm:h-48 object-cover group-hover/card:scale-110 transition-transform duration-700">
                         <div class="p-4 sm:p-5">
                             <span class="text-[10px] sm:text-xs font-bold text-primary mb-1 block">Februari 2026</span>
@@ -141,20 +132,20 @@
                             <p class="text-xs sm:text-sm text-slate-500">Alokasi kas desa untuk perbaikan atap balai warga.</p>
                         </div>
                     </div>
-                    <div class="snap-center shrink-0 w-[260px] sm:w-80 panel-theme overflow-hidden rounded-2xl card-hover group/card">
+                    <div class="snap-center shrink-0 w-[260px] sm:w-80 panel-theme overflow-hidden rounded-2xl card-hover group/card border-t-4 border-t-danger">
                         <img src="https://images.unsplash.com/photo-1574607383077-47ddc2dc51c4?w=500&q=80" alt="Bantuan Darurat" class="w-full h-40 sm:h-48 object-cover group-hover/card:scale-110 transition-transform duration-700">
                         <div class="p-4 sm:p-5">
                             <span class="text-[10px] sm:text-xs font-bold text-primary mb-1 block">Maret 2026</span>
                             <h4 class="font-bold text-base sm:text-lg mb-1">Dana Tanggap Bencana</h4>
-                            <p class="text-xs sm:text-sm text-slate-500">Pemberian bantuan darurat untuk keluarga Pak Budi.</p>
+                            <p class="text-xs sm:text-sm text-slate-500">Pemberian bantuan darurat untuk keluarga terdampak.</p>
                         </div>
                     </div>
-                    <div class="snap-center shrink-0 w-[260px] sm:w-80 panel-theme overflow-hidden rounded-2xl card-hover group/card">
+                    <div class="snap-center shrink-0 w-[260px] sm:w-80 panel-theme overflow-hidden rounded-2xl card-hover group/card border-t-4 border-t-primary">
                         <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=500&q=80" alt="Rapat Desa" class="w-full h-40 sm:h-48 object-cover group-hover/card:scale-110 transition-transform duration-700">
                         <div class="p-4 sm:p-5">
                             <span class="text-[10px] sm:text-xs font-bold text-primary mb-1 block">April 2026</span>
                             <h4 class="font-bold text-base sm:text-lg mb-1">Musyawarah Laporan</h4>
-                            <p class="text-xs sm:text-sm text-slate-500">Pemaparan transparansi laporan keuangan Q1.</p>
+                            <p class="text-xs sm:text-sm text-slate-500">Pemaparan transparansi laporan keuangan kuartal 1.</p>
                         </div>
                     </div>
 
@@ -191,7 +182,7 @@
         </div>
     </section>
 
-    <section class="py-12 sm:py-16 px-4 sm:px-6 relative z-10 border-t border-slate-200/50 dark:border-slate-700/50 panel-theme rounded-none border-x-0 bg-white/20 dark:bg-slate-900/20">
+    <section class="py-12 sm:py-16 px-4 sm:px-6 relative z-10 border-t border-slate-200/50 dark:border-slate-700/50 panel-theme rounded-none border-x-0 !bg-white/20 dark:!bg-slate-900/20">
         <div class="max-w-6xl mx-auto text-center" data-aos="zoom-in" data-aos-duration="1000">
             <p class="text-[10px] sm:text-sm font-bold uppercase tracking-[0.1em] sm:tracking-[0.2em] text-slate-500 mb-8 sm:mb-10">Didukung & Diawasi Oleh Mitra Terpercaya</p>
             
