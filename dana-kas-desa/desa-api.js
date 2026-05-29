@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateIcons() {
         if (btnTheme) btnTheme.innerHTML = htmlElement.classList.contains('dark') ? '☀️' : '🌙';
         if (btnStyle) btnStyle.innerHTML = htmlElement.getAttribute('data-style') === 'normal' ? '✨' : '🎨';
-        // Ikon normalStyle (rect) diganti emoji palet warna 🎨, ikon glassmorph diganti bintang ✨
     }
     updateIcons();
 
@@ -45,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dashboardContent = document.getElementById('dashboardContent');
     
     if (loadingScreen && dashboardContent) {
-        // Pastikan loading screen hilang apapun yang terjadi agar layar tidak blank
+        // Pastikan loading screen hilang apapun yang terjadi
         setTimeout(() => {
             loadingScreen.style.opacity = '0';
             dashboardContent.classList.remove('opacity-0');
@@ -57,7 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (dashboardContent) {
         dashboardContent.classList.remove('opacity-0');
     }
-
     const elNamaWarga = document.getElementById('namaWarga');
     if (elNamaWarga) {
         const identitasWarga = localStorage.getItem('desa_nama');
@@ -74,7 +72,7 @@ async function fetchDashboardData() {
         // Simulasi pemanggilan API ke MariaDB/PHP
         const data = await new Promise(resolve => setTimeout(() => resolve({
             saldoDesa: 491000000, 
-            totalPengeluaran: 9000000, // <--- Data Transparansi
+            totalPengeluaran: 9000000, 
             iuranTerbayar: 4, 
             iuranTotal: 12, 
             statusIuran: 'Menunggu Bulan Mei'
@@ -113,7 +111,7 @@ async function fetchDashboardData() {
     }
 }
 
-// Fungsi Buka/Tutup Modal
+// Fungsi Buka/Tutup Modal Universal
 function openModal(id) {
     const modal = document.getElementById(id);
     if (modal) modal.classList.replace('hidden', 'flex');
@@ -125,7 +123,14 @@ function closeModal(id) {
 }
 
 // Fungsi Logout
-function logout() {
-    localStorage.removeItem('desa_token'); localStorage.removeItem('desa_nama');
-    window.location.href = 'login-desa.html';
+function logout(jenis) {
+    if(jenis === 'warga') {
+        localStorage.removeItem('desa_token'); 
+        localStorage.removeItem('desa_nama');
+        window.location.href = 'login-desa.html';
+    } else {
+        localStorage.removeItem('admin_token');
+        localStorage.removeItem('admin_name');
+        window.location.href = 'login-admin.html';
+    }
 }
