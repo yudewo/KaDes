@@ -19,12 +19,14 @@
             .card-hover { @apply transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl hover:border-primary/50 relative overflow-hidden; }
             .skeleton { @apply animate-pulse bg-slate-300 dark:bg-slate-700 h-8 w-3/4 rounded mx-auto mb-2; }
             .icon-btn { @apply w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 text-slate-800 dark:text-slate-100 flex justify-center items-center cursor-pointer transition-all duration-300 hover:scale-105; }
+            .glass-input { @apply w-full px-4 py-3 rounded-lg mt-1 outline-none text-sm transition-all duration-300; }
+            [data-theme="light"] .glass-input { background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.15); color: #333; }
+            [data-theme="dark"] .glass-input { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; }
             .dot-flashing { position: relative; width: 15px; height: 15px; border-radius: 5px; background-color: #10b981; animation: dot-flashing 1s infinite linear alternate; animation-delay: 0.5s; }
             .dot-flashing::before, .dot-flashing::after { content: ''; display: inline-block; position: absolute; top: 0; width: 15px; height: 15px; border-radius: 5px; background-color: #10b981; }
             .dot-flashing::before { left: -25px; animation: dot-flashing 1s infinite alternate; animation-delay: 0s; }
             .dot-flashing::after { left: 25px; animation: dot-flashing 1s infinite alternate; animation-delay: 1s; }
             @keyframes dot-flashing { 0% { background-color: #10b981; transform: translateY(0); } 50%, 100% { background-color: rgba(16, 185, 129, 0.2); transform: translateY(-15px); } }
-            .scrollbar-hide::-webkit-scrollbar { display: none; }
         }
     </style>
 </head>
@@ -60,13 +62,11 @@
                     <div id="saldoSkeleton" class="skeleton"></div>
                     <p id="totalSaldo" class="text-3xl font-bold text-primary mb-2 hidden">Rp 0</p>
                 </article>
-
                 <article class="panel-theme card-hover p-8 text-center border-t-4 border-t-danger">
                     <h3 class="text-sm font-semibold opacity-80 mb-3 uppercase tracking-wide">Total Pengeluaran Desa</h3>
                     <div id="pengeluaranSkeleton" class="skeleton"></div>
                     <p id="totalPengeluaran" class="text-3xl font-bold text-danger mb-2 hidden">Rp 0</p>
                 </article>
-
                 <article class="panel-theme card-hover p-8 text-center border-t-4 border-t-blue-500">
                     <h3 class="text-sm font-semibold opacity-80 mb-3 uppercase tracking-wide">Iuran Terbayar Anda</h3>
                     <div id="iuranSkeleton" class="skeleton"></div>
@@ -78,14 +78,13 @@
                 <article class="panel-theme p-8 border-t-4 border-t-danger">
                     <div class="text-4xl mb-4">📈</div>
                     <h2 class="text-2xl font-bold mb-3">Transparansi Dana Desa</h2>
-                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">Kawal rincian pengeluaran dana kas desa secara transparan.</p>
+                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">Kawal rincian pengeluaran dana kas desa secara transparan dari laporan Kades/Admin.</p>
                     <button onclick="openModal('modalTransparansi')" class="btn-primary !bg-danger hover:!bg-red-700 w-full sm:w-auto shadow-[0_8px_25px_rgba(239,68,68,0.5)]">Lihat Rincian Pengeluaran</button>
                 </article>
-
                 <article class="panel-theme p-8 border-t-4 border-t-primary">
                     <div class="text-4xl mb-4">💳</div>
                     <h2 class="text-2xl font-bold mb-3">Bayar Kas Desa</h2>
-                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">Setorkan iuran bulanan Anda untuk pembangunan desa.</p>
+                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">Setorkan iuran bulanan Anda untuk pembangunan desa yang lebih baik secara online.</p>
                     <button onclick="openModal('modalBayarKas')" class="btn-primary w-full sm:w-auto shadow-[0_8px_25px_rgba(16,185,129,0.5)]">Bayar Kas Sekarang</button>
                 </article>
             </section>
@@ -94,10 +93,55 @@
 
     <div id="modalTransparansi" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('modalTransparansi')"></div>
-        <div class="panel-theme relative w-full max-w-2xl p-6 sm:p-8 shadow-2xl z-10">
-            <h3 class="text-xl font-bold mb-4">Bukti Pengeluaran Kas Desa</h3>
-            <p class="text-sm text-slate-500 mb-4">Data ditarik secara real-time dari sistem.</p>
-            <button onclick="closeModal('modalTransparansi')" class="btn-primary w-full">Tutup</button>
+        <div class="panel-theme relative w-full max-w-2xl p-6 sm:p-8 shadow-2xl z-10 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Bukti Pengeluaran Kas Desa</h3>
+                <button onclick="closeModal('modalTransparansi')" class="text-2xl opacity-70">✕</button>
+            </div>
+            
+            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
+                <table class="w-full text-left border-collapse min-w-[500px]">
+                    <thead>
+                        <tr class="bg-slate-100 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+                            <th class="p-4 text-xs font-bold uppercase">Tanggal</th>
+                            <th class="p-4 text-xs font-bold uppercase">Keterangan</th>
+                            <th class="p-4 text-xs font-bold uppercase">Nominal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBodyTransparansi" class="divide-y divide-slate-200 dark:divide-slate-700 text-sm">
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="flex justify-between items-center px-2">
+                <span id="pageInfo" class="text-xs text-slate-500 font-bold uppercase">Halaman 1 dari 1</span>
+                <div class="flex gap-2">
+                    <button onclick="prevPage()" class="px-3 py-1 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs font-bold hover:bg-primary hover:text-white transition-colors">Sebelumnya</button>
+                    <button onclick="nextPage()" class="px-3 py-1 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs font-bold hover:bg-primary hover:text-white transition-colors">Selanjutnya</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalBayarKas" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('modalBayarKas')"></div>
+        <div class="panel-theme relative w-full max-w-sm p-6 sm:p-8 shadow-2xl z-10 text-center">
+            <h3 class="text-xl font-bold text-primary mb-4">Metode Pembayaran QRIS</h3>
+            <div class="bg-white p-4 rounded-xl mb-4 border-2 border-primary/20">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=KopDesPayment" alt="QRIS Dummy" class="mx-auto">
+                <p class="text-[10px] mt-2 text-slate-400 font-bold uppercase">Scan QR di atas untuk membayar</p>
+            </div>
+            <form onsubmit="submitBayar(event)" class="space-y-4 text-left">
+                <div>
+                    <label class="text-xs font-bold opacity-80 uppercase">Pilih Tagihan</label>
+                    <select class="glass-input" required>
+                        <option value="50000">1 Bulan (Rp 50.000)</option>
+                        <option value="150000">3 Bulan (Rp 150.000)</option>
+                        <option value="600000">1 Tahun (Rp 600.000)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary w-full shadow-[0_8px_20px_rgba(16,185,129,0.3)]">Konfirmasi Sudah Bayar</button>
+            </form>
         </div>
     </div>
 
