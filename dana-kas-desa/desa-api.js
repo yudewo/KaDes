@@ -40,22 +40,78 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const loginForm = document.getElementById('loginForm');
+    
+    if (loginForm) {
+        // Fitur Toggle Password
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+            });
+        }
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+            
+            const userInput = document.getElementById('nik').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnSpinner = document.getElementById('btnSpinner');
+            const errorBox = document.getElementById('loginError');
+
+            // Reset Error & Show Loading
+            errorBox.classList.add('hidden');
+            submitBtn.disabled = true;
+            if(btnSpinner) btnSpinner.classList.remove('hidden');
+            if(btnText) btnText.innerText = 'Memverifikasi...';
+
+            try {
+                // Validasi: NIK 16 digit ATAU format email
+                const isNIK = /^\d{16}$/.test(userInput);
+                const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userInput);
+
+                if (!isNIK && !isEmail) {
+                    throw new Error('NIK harus 16 angka atau gunakan Email valid.');
+                }
+
+                // SIMULASI PROSES BERHASIL
+                setTimeout(() => {
+                    localStorage.setItem('desa_token', 'token-warga-123');
+                    localStorage.setItem('desa_nama', userInput); 
+                    
+                    // PINDAH KE DASHBOARD
+                    window.location.href = 'dashboard-warga.html';
+                }, 1500);
+
+            } catch (error) {
+                // Tampilkan Error
+                errorBox.innerText = error.message;
+                errorBox.classList.remove('hidden');
+                
+                // Kembalikan Tombol
+                submitBtn.disabled = false;
+                if(btnSpinner) btnSpinner.classList.add('hidden');
+                if(btnText) btnText.innerText = 'Masuk Sekarang';
+            }
+        });
+    }
+
     const loadingScreen = document.getElementById('loadingScreen');
     const dashboardContent = document.getElementById('dashboardContent');
     
     if (loadingScreen && dashboardContent) {
-        // Pastikan loading screen hilang apapun yang terjadi
         setTimeout(() => {
             loadingScreen.style.opacity = '0';
             dashboardContent.classList.remove('opacity-0');
             setTimeout(() => loadingScreen.style.display = 'none', 500);
-            
-            // Panggil data setelah loading selesai
             if (typeof fetchDashboardData === "function") fetchDashboardData();
         }, 1500); 
-    } else if (dashboardContent) {
-        dashboardContent.classList.remove('opacity-0');
     }
+
+    // Tampilkan Nama Warga di Dashboard
     const elNamaWarga = document.getElementById('namaWarga');
     if (elNamaWarga) {
         const identitasWarga = localStorage.getItem('desa_nama');
@@ -69,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function fetchDashboardData() {
     try {
-        // Simulasi pemanggilan API ke MariaDB/PHP
         const data = await new Promise(resolve => setTimeout(() => resolve({
             saldoDesa: 491000000, 
             totalPengeluaran: 9000000, 
@@ -78,59 +133,35 @@ async function fetchDashboardData() {
             statusIuran: 'Menunggu Bulan Mei'
         }), 500));
 
-        // Sembunyikan efek skeleton loading
         document.querySelectorAll('.skeleton').forEach(el => el.classList.add('hidden'));
 
-        // 1. Tampilkan Saldo
-        const totalSaldoEl = document.getElementById('totalSaldo');
-        if(totalSaldoEl) {
-            totalSaldoEl.innerText = 'Rp ' + data.saldoDesa.toLocaleString('id-ID');
-            totalSaldoEl.classList.remove('hidden');
+        if(document.getElementById('totalSaldo')) {
+            document.getElementById('totalSaldo').innerText = 'Rp ' + data.saldoDesa.toLocaleString('id-ID');
+            document.getElementById('totalSaldo').classList.remove('hidden');
         }
-        
-        // 2. Tampilkan Total Pengeluaran (Transparansi)
-        const totalPengeluaranEl = document.getElementById('totalPengeluaran');
-        if(totalPengeluaranEl) {
-            totalPengeluaranEl.innerText = 'Rp ' + data.totalPengeluaran.toLocaleString('id-ID');
-            totalPengeluaranEl.classList.remove('hidden');
+        if(document.getElementById('totalPengeluaran')) {
+            document.getElementById('totalPengeluaran').innerText = 'Rp ' + data.totalPengeluaran.toLocaleString('id-ID');
+            document.getElementById('totalPengeluaran').classList.remove('hidden');
         }
-        
-        // 3. Tampilkan Iuran
-        const iuranTerbayarEl = document.getElementById('iuranTerbayar');
-        if(iuranTerbayarEl) {
-            iuranTerbayarEl.innerText = `${data.iuranTerbayar}/${data.iuranTotal} Bulan`;
-            iuranTerbayarEl.classList.remove('hidden');
+        if(document.getElementById('iuranTerbayar')) {
+            document.getElementById('iuranTerbayar').innerText = `${data.iuranTerbayar}/${data.iuranTotal} Bulan`;
+            document.getElementById('iuranTerbayar').classList.remove('hidden');
         }
-        const iuranStatusEl = document.getElementById('iuranStatus');
-        if(iuranStatusEl) {
-            iuranStatusEl.innerText = 'Status: ' + data.statusIuran;
-            iuranStatusEl.classList.remove('hidden');
+        if(document.getElementById('iuranStatus')) {
+            document.getElementById('iuranStatus').innerText = 'Status: ' + data.statusIuran;
+            document.getElementById('iuranStatus').classList.remove('hidden');
         }
-    } catch (error) { 
-        console.error("Error memuat data dashboard:", error); 
-    }
+    } catch (error) { console.error(error); }
 }
 
-// Fungsi Buka/Tutup Modal Universal
-function openModal(id) {
-    const modal = document.getElementById(id);
-    if (modal) modal.classList.replace('hidden', 'flex');
-}
+function openModal(id) { document.getElementById(id)?.classList.replace('hidden', 'flex'); }
+function closeModal(id) { document.getElementById(id)?.classList.replace('flex', 'hidden'); }
 
-function closeModal(id) {
-    const modal = document.getElementById(id);
-    if (modal) modal.classList.replace('flex', 'hidden');
-}
-
-// Fungsi Logout
 function logout(jenis) {
+    localStorage.clear();
     if(jenis === 'warga') {
-        localStorage.removeItem('desa_token'); 
-        localStorage.removeItem('desa_nama');
         window.location.href = 'login-desa.html';
     } else {
-        localStorage.removeItem('admin_token');
-        localStorage.removeItem('admin_name');
         window.location.href = 'login-admin.html';
     }
 }
