@@ -143,28 +143,41 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        loginForm.addEventListener('submit', (e) => {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault(); 
             const userInput = document.getElementById('nik').value.trim();
+            const passInput = document.getElementById('password').value; // Ambil value password
             const btnText = document.getElementById('btnText');
             const submitBtn = document.getElementById('submitBtn');
             const errorBox = document.getElementById('loginError');
 
             submitBtn.disabled = true;
-            btnText.innerText = 'Memverifikasi...';
+            btnText.innerText = 'Memverifikasi ke Database...';
             errorBox.classList.add('hidden');
 
             try {
-                const isNIK = /^\d{16}$/.test(userInput);
-                const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userInput);
+                // KIRIM DATA KE PHP (Backend)
+                const response = await fetch('api-login.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nik: userInput, password: passInput })
+                });
 
-                if (!isNIK && !isEmail) throw new Error('Harap masukkan NIK (16 Angka) atau Email yang valid.');
+                // TANGKAP JAWABAN DARI PHP
+                const result = await response.json();
 
-                setTimeout(() => {
-                    localStorage.setItem('desa_token', 'xxx-abc');
-                    localStorage.setItem('desa_nama', userInput); 
+                if (result.status === 'success') {
+                    // Jika cocok di Database, simpan nama dari database ke LocalStorage
+                    localStorage.setItem('desa_token', 'token-warga-123');
+                    localStorage.setItem('desa_nama', result.nama); 
+                    
+                    // Pindah ke Dashboard
                     window.location.href = 'dashboard-warga.html';
-                }, 1000);
+                } else {
+                    // Jika NIK atau Password salah dari Database
+                    throw new Error(result.pesan);
+                }
+
             } catch (error) {
                 errorBox.innerText = error.message;
                 errorBox.classList.remove('hidden');
