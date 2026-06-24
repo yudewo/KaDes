@@ -1,0 +1,312 @@
+/* CSS VARIABLES */
+:root {
+    --bg-color: #f8fafc;
+    --text-color: #0f172a;
+    --panel-bg: #ffffff;
+    --panel-border: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --primary-color: #10b981;
+    --input-border: rgba(15, 23, 42, 0.3);
+
+    --blob-1-color: #34d399;
+    --blob-2-color: #10b981;
+    --blob-3-color: #059669;
+}
+
+[data-theme="dark"] {
+    --bg-color: #0f172a;
+    --text-color: #f8fafc;
+    --panel-bg: #1e293b;
+    --panel-border: #334155;
+    --shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    --input-border: rgba(255, 255, 255, 0.3);
+
+    --blob-1-color: #059669;
+    --blob-2-color: #047857;
+    --blob-3-color: #0f766e;
+}
+
+[data-theme="light"][data-style="glass"] {
+    --panel-bg: rgba(255, 255, 255, 0.4);
+    --panel-border: rgba(255, 255, 255, 0.6);
+    --shadow: 0 8px 32px 0 rgba(16, 185, 129, 0.15);
+}
+
+[data-theme="dark"][data-style="glass"] {
+    --panel-bg: rgba(15, 23, 42, 0.5);
+    --panel-border: rgba(255, 255, 255, 0.1);
+    --shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow: hidden;
+}
+
+.theme-controls-floating {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+}
+
+.icon-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 1px solid var(--panel-border);
+    background: var(--panel-bg);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s;
+    box-shadow: var(--shadow);
+}
+
+.icon-btn:hover {
+    transform: scale(1.1);
+    background: var(--text-color);
+    color: var(--bg-color);
+}
+
+.liquid-bg {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    filter: blur(40px);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+[data-style="glass"] .liquid-bg {
+    opacity: 0.85;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    animation: liquidAnim 12s infinite alternate ease-in-out;
+    transition: background-color 0.5s ease;
+}
+
+.blob-1 {
+    width: 400px;
+    height: 400px;
+    background-color: var(--blob-1-color);
+    top: 5%;
+    left: 10%;
+}
+
+.blob-2 {
+    width: 450px;
+    height: 450px;
+    background-color: var(--blob-2-color);
+    bottom: 5%;
+    right: 10%;
+    animation-delay: -4s;
+}
+
+.blob-3 {
+    width: 300px;
+    height: 300px;
+    background-color: var(--blob-3-color);
+    top: 35%;
+    left: 45%;
+    animation-delay: -8s;
+}
+
+@keyframes liquidAnim {
+    0% {
+        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+        transform: translate(0, 0) scale(1);
+    }
+    100% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        transform: translate(30px, -30px) scale(1.2);
+    }
+}
+
+.glass-panel {
+    position: relative;
+    z-index: 1;
+    width: 90%;
+    max-width: 400px;
+    padding: 50px 40px;
+    border-radius: 24px;
+    text-align: center;
+}
+
+.panel-theme {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: var(--shadow);
+}
+
+[data-style="glass"] .panel-theme {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.glass-panel h2 {
+    font-size: 32px;
+    margin-bottom: 40px;
+    font-weight: 600;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 35px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: var(--text-color);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--input-border);
+    outline: none;
+    transition: 0.3s;
+}
+
+#password {
+    padding-right: 40px;
+}
+
+.input-group label {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    font-size: 16px;
+    color: var(--text-color);
+    opacity: 0.7;
+    pointer-events: none;
+    transition: 0.3s ease;
+}
+
+.input-group input:focus ~ label,
+.input-group input:valid ~ label {
+    top: -20px;
+    font-size: 13px;
+    color: var(--primary-color);
+    opacity: 1;
+    font-weight: 600;
+}
+
+.input-group input:focus {
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.toggle-password {
+    position: absolute;
+    right: 0;
+    top: 10px;
+    cursor: pointer;
+    color: var(--text-color);
+    opacity: 0.7;
+    transition: 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:hover {
+    color: var(--primary-color);
+    opacity: 1;
+}
+
+.btn {
+    position: relative;
+    width: 100%;
+    padding: 15px;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 30px;
+    color: var(--text-color);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    margin-top: 15px;
+    z-index: 1;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(115deg, transparent, rgba(16, 185, 129, 0.4), rgba(52, 211, 153, 0.4), transparent);
+    background-size: 200% 100%;
+    border-radius: 30px;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+}
+
+.btn:hover::before {
+    opacity: 1;
+    animation: liquidFlow 2s linear infinite;
+}
+
+.btn:hover {
+    transform: scale(1.03) translateY(-3px);
+    box-shadow: var(--shadow);
+    letter-spacing: 1px;
+    border-color: var(--primary-color);
+}
+
+@keyframes liquidFlow {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+}
+
+.link-beranda {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #64748b !important;
+    transition: color 0.3s ease;
+}
+
+.link-beranda:visited {
+    color: #64748b !important;
+}
+
+.link-beranda:hover {
+    color: #ef4444 !important;
+}
+
+/* mode gelap */
+[data-theme="dark"] .link-beranda,
+[data-theme="dark"] .link-beranda:visited {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .link-beranda:hover {
+    color: #ef4444 !important; 
+}

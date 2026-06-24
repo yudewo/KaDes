@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light" data-style="normal">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="theme-controls-floating">
+        <button id="toggleTheme" class="icon-btn" title="Ganti Tema"></button>
+        <button id="toggleStyle" class="icon-btn" title="Ganti Gaya"></button>
+    </div>
+
+    <div class="liquid-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="glass-panel panel-theme">
+        <h2>Selamat Datang</h2>
+        <form id="loginForm">
+            <div class="input-group">
+                <input type="text" id="username" required>
+                <label for="username">Username</label>
+            </div>
+            
+            <div class="input-group">
+                <input type="password" id="password" required>
+                <label for="password">Password</label>
+                <span class="toggle-password" id="togglePassword">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </span>
+            </div>
+            
+            <button type="submit" class="btn">Masuk</button>
+            
+            <div style="margin-top: 20px; text-align: center;">
+                <a href="dana-kas-desa/dana-desa.html" class="link-beranda">← Kembali ke Beranda</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
