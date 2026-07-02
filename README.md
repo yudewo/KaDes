@@ -60,8 +60,8 @@ Compiled by Group:
 1. **Yudewo Alghiditya Winarno** - NPM 202443500729
 2. **Syifa Shalsabilah** - NPM 202443500757
 3. **Irfan Maulana** - NPM 20243500746
-4. **Wina Amalia Sahidu** - NPM 20244350080
-5. **Rifqi Hanif Arindra Putra** - NPM 2024350083
+4. **Wina Amalia Sahidu** - NPM 202443500750
+5. **Rifqi Hanif Arindra Putra** - NPM 20243500783
 
 Thank you for visiting this repository! Feel free to use this code for learning purposes. Happy coding! 🚀
 
@@ -128,7 +128,7 @@ Disusun oleh Kelompok:
 1. **Yudewo Alghiditya Winarno** - NPM 202443500729
 2. **Syifa Shalsabilah** - NPM 202443500757
 3. **Irfan Maulana** - NPM 20243500746
-4. **Wina Amalia Sahidu** - NPM 20244350080
-5. **Rifqi Hanif Arindra Putra** - NPM 2024350083
+4. **Wina Amalia Sahidu** - NPM 202443500750
+5. **Rifqi Hanif Arindra Putra** - NPM 20243500783
 
 Terima kasih sudah mampir ke *repository* ini! Jangan ragu untuk menggunakan kode ini sebagai bahan belajar. Selamat mengoding! 🚀
