@@ -8,8 +8,11 @@ $data = json_decode(file_get_contents("php://input"));
 if(isset($data->ket) && isset($data->jenis) && isset($data->jumlah) && isset($data->tgl)) {
     $id = 'TRX-' . time(); 
     $ket = mysqli_real_escape_string($koneksi, $data->ket);
-    // Menyesuaikan format string
-    $jenis = ($data->jenis == 'Masuk') ? 'Kas Masuk' : 'Kas Keluar';
+    
+    // DIPERBAIKI: Langsung tangkap value "Kas Masuk" atau "Kas Keluar" yang dikirim HTML
+    $jenis_input = $data->jenis;
+    $jenis = (strpos(strtolower($jenis_input), 'masuk') !== false) ? 'Kas Masuk' : 'Kas Keluar';
+    
     $jumlah = (int)$data->jumlah;
     $tgl = mysqli_real_escape_string($koneksi, $data->tgl);
     

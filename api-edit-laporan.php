@@ -8,7 +8,11 @@ $data = json_decode(file_get_contents("php://input"));
 if(isset($data->id) && isset($data->ket) && isset($data->jenis) && isset($data->jumlah) && isset($data->tgl)) {
     $id = mysqli_real_escape_string($koneksi, $data->id);
     $ket = mysqli_real_escape_string($koneksi, $data->ket);
-    $jenis = ($data->jenis == 'Masuk') ? 'Kas Masuk' : 'Kas Keluar';
+    
+    // DIPERBAIKI: Langsung tangkap value dan deteksi kata 'masuk'
+    $jenis_input = $data->jenis;
+    $jenis = (strpos(strtolower($jenis_input), 'masuk') !== false) ? 'Kas Masuk' : 'Kas Keluar';
+    
     $jumlah = (int)$data->jumlah;
     $tgl = mysqli_real_escape_string($koneksi, $data->tgl);
     

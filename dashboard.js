@@ -384,7 +384,7 @@ function editReport(id) {
     document.getElementById('modalReportTitle').innerText = "Edit Transaksi";
     document.getElementById('editReportId').value = t.id;
     document.getElementById('repKeterangan').value = t.ket;
-    document.getElementById('repJenis').value = t.jenis.includes('Masuk') ? 'Masuk' : 'Keluar';
+    document.getElementById('repJenis').value = t.jenis.includes('Masuk') ? 'Kas Masuk' : 'Kas Keluar';
     document.getElementById('repNominal').value = t.jumlah;
     document.getElementById('repTanggal').value = t.tgl;
     document.getElementById('reportModal').style.display = 'flex';
