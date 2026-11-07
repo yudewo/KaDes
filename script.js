@@ -106,9 +106,9 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             btn.innerHTML = originalText;
             btn.style.opacity = '1';
         }
-    } catch (error) {
-        alert('Gagal terhubung ke database. Pastikan XAMPP (Apache & MySQL) menyala.');
-        btn.innerHTML = originalText;
-        btn.style.opacity = '1';
+    } // catch (error) {
+        //alert('Gagal terhubung ke database. Pastikan XAMPP (Apache & MySQL) menyala.');
+       //btn.innerHTML = originalText;
+        //btn.style.opacity = '1';
     }
 });
